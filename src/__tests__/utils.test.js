@@ -63,6 +63,7 @@ describe('suggested payment names', () => {
   it('resolves payer and recipient IDs to group member names', () => {
     expect(paymentMemberName({ fromId: 'member-1' }, 'from', members)).toBe('Ada');
     expect(paymentMemberName({ toMemberId: 'member-2' }, 'to', members)).toBe('Bola');
+    expect(paymentMemberName({ from_member_id: 'member-1' }, 'from', members)).toBe('Ada');
   });
 
   it('uses explicit names when supplied by the API', () => {

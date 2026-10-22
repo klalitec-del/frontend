@@ -1,4 +1,4 @@
-import { money } from '../utils.js';
+import { money, paymentMemberName } from '../utils.js';
 
 export default function ExpenseHistory({ history, loading, error, groupName, members, onRefresh }) {
   return (
@@ -12,10 +12,18 @@ export default function ExpenseHistory({ history, loading, error, groupName, mem
           <span className="settlement-avatar">₦</span>
           <div>
             <b>{expense.description || 'Shared expense'}</b>
-            <small>{expense.payments.map((item) => {
+            {expense.created_at && <small>{new Date(expense.created_at).toLocaleString()}</small>}
+            <small>{expense.balances.map((item) => {
               const member = members.find((savedMember) => savedMember.id === item.memberId);
-              return `${member?.name || 'Member'}: ${money(item.amountPaid)}`;
+              return `${item.name || member?.name || 'Member'}: paid ${money(item.contributed)}, balance ${money(item.balance)}`;
             }).join(' · ')}</small>
+            {expense.settlements.length > 0
+              ? expense.settlements.map((item, paymentIndex) => (
+                <small key={`${item.fromId || item.from}-${item.toId || item.to}-${paymentIndex}`}>
+                  {paymentMemberName(item, 'from', members)} pays {paymentMemberName(item, 'to', members)} {money(item.amount)}
+                </small>
+              ))
+              : <small>No payments needed.</small>}
           </div>
           <strong>{money(expense.total)}</strong>
         </article>

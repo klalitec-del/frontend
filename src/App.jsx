@@ -112,7 +112,7 @@ function App() {
       setError(error.message || 'Could not sign out.');
     }
   }
-
+    
   return (
     <div className="app-shell">
       <HeaderIntro groupId={group.groupId} results={results} onLogout={signOut}>

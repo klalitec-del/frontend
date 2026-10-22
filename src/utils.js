@@ -9,7 +9,10 @@ export function paymentMemberName(payment, side, members) {
   if (explicitName) return explicitName;
 
   const value = payment[side];
-  const memberId = payment[`${side}Id`] || payment[`${side}MemberId`] || value;
+  const memberId = payment[`${side}Id`]
+    || payment[`${side}MemberId`]
+    || payment[`${side}_member_id`]
+    || value;
   const member = members.find((item) => item.id === memberId);
   if (member) return member.name;
   if (value) return value;
